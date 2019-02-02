@@ -1,3 +1,17 @@
+class Enemy {
+    constructor(sprite) {
+        this.sprite = 'images/enemy-bug.png';
+    }
+    
+    update(dt) {
+
+    }
+
+    render() {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    };
+}
+
 // Enemies our player must avoid
 var Enemy = function() {
     // Variables applied to each of our instances go here,
