@@ -1,5 +1,5 @@
 // Enemies our player must avoid
-let score = 0
+
 
 
 class Enemy {
@@ -12,6 +12,8 @@ class Enemy {
         // a helper we've provided to easily load images
         this.x = -50;//-100
         this.y = y;
+        this.width = 70;
+        this.height = 83
         this.speed = Math.floor(Math.random() * 101);
         // console.log(this.speed);
         this.sprite = 'images/enemy-bug.png';
@@ -27,6 +29,15 @@ class Enemy {
         if(this.x > 505) {
             this.x = -90;
             this.speed = Math.floor(Math.random() * 101 + 30);            
+        }
+
+        if(player.x < this.x + this.width &&
+            player.x + player.width > this.x &&
+            player.y < this.y + this.height &&
+            player.y + player.height > this.y ) {
+           player.x = 202;
+           player.y = 404;
+           score--;
         }
     }
     
@@ -44,12 +55,15 @@ class Enemy {
 class Player {
     constructor(x, y, sprite) {
         this.x = 202;
-        this.y = (83*5) - 20;
+        this.y = 404 //- 20;
+        this.width = 80;
+        this.height = 63
         this.sprite = 'images/char-boy.png';
     }
 
-    update(dt) {
-
+    reset() {
+        this.x = 202;
+        this.y = 404
     }
 
     render() {
@@ -57,10 +71,7 @@ class Player {
     }
 
     handleInput(key) {
-    
-
         
-
         switch(key) {
             case 'left':
             this.x = this.x > 0 ? this.x - 101 : this.x;
@@ -69,21 +80,18 @@ class Player {
             this.x = this.x >= 404 ? this.x : this.x + 101;
             break
             case 'up':
-            // this.y = this.y > 83 ? this.y - 83 : this.y = 415;
-            if(this.y > 63){
-                this.y -= 63;
+            if(this.y > 83){
+                this.y -= 83;
             } else {
-                this.y = (83*5) - 20;
-                score++;
+                player.reset()
+                updateScore();
             }
             break
             case 'down':
-            this.y = this.y === (83*5) - 20? this.y : this.y + 63;
-            console.log(this.y);
-            checkCollisions();
+            this.y = this.y === 404? this.y : this.y + 83;
+            // console.log(this.y);
             break
-        }
-        
+        }        
     }
 }
 
@@ -99,12 +107,14 @@ for(let i = 0; i < 3; i++) {
     allEnemies.push(enemy);
 }
 
-console.log(allEnemies.x);
+
 
 
 // Place the player object in a variable called player
 
 const player = new Player();
+
+
 
 
 // This listens for key presses and sends the keys to your
