@@ -13,7 +13,7 @@ class Enemy {
     
     update(dt) {
 
-        // Speed Handler
+        // Speed Handler--> Gives enemies a random speeds (so they can move).
         this.x += this.speed * dt;       
         if(this.x > 505) {
             this.x = -90;
@@ -21,11 +21,12 @@ class Enemy {
             this.speed < 30 ? this.speed === 30 : this.speed;
         }
         
+        // Used collisions as a callback to keep track of them.
         this.checkCollisions();
     }
 
     checkCollisions() {
-        // Calculate colision
+        // Calculates and handles collisions.
         if(player.x < this.x + this.width &&
             player.x + player.width > this.x &&
             player.y < this.y + this.height &&
@@ -52,12 +53,14 @@ class Enemy {
 
 class Player {
     constructor(x, y, sprite) {
+       
         this.x = 202;
         this.y = 404;
-        // Altura e largura do player para termos uma 'área de colisão' e assim
-        // calcularmos a possível colisão com um inigmo
+       
+        // Assigned a width and a height for the player to have a "colision range".
         this.width = 80;
         this.height = 63
+
         this.sprite = 'images/char-boy.png';
     }
 
@@ -75,8 +78,8 @@ class Player {
     }
 
 
-    reset() {
-        // Reset para posição inicial do player em caso de vitória ou de choque com inimigo
+    reset() {   
+        // Reset character to the original position (called either in winnig or losing)
         this.x = 202;
         this.y = 404
     }
@@ -85,7 +88,7 @@ class Player {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
 
-    // Handler da movimentação do player
+    // Player's moving handler
     handleInput(key) {        
         switch(key) {
             case 'left':
@@ -125,7 +128,7 @@ const allEnemies = [];
 
 
 
-// Here we subtract 20 to align enemies sprites 
+// Aligned enemies and instantiated them.
 const rows = [((83 * 1) - 20) , ((83 * 2) - 20), ((83 * 3) - 20)]
 for(let i = 0; i < 3; i++) {
     let enemy = new Enemy(null, rows[i]);
@@ -144,9 +147,9 @@ const player = new Player();
 
 // ------- Update score-----------//
 const scoreBoard = document.querySelector('#score');
-// placar inicial
+// Initial score
 let score = 0;
-// função que atualiza o placar
+// Updates the score
 const updateScore = () => {
     return scoreBoard.innerHTML = score;
 }
