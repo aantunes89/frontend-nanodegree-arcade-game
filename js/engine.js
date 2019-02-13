@@ -112,7 +112,8 @@ var Engine = (function(global) {
                 'images/stone-block.png',   // Row 2 of 3 of stone
                 'images/stone-block.png',   // Row 3 of 3 of stone
                 'images/grass-block.png',   // Row 1 of 2 of grass
-                'images/grass-block.png'    // Row 2 of 2 of grass
+                'images/grass-block.png',  // Row 2 of 2 of grass
+                'images/Selector.png'       // First cell of Row 2 of grass
             ],
             numRows = 6,
             numCols = 5,
@@ -126,6 +127,8 @@ var Engine = (function(global) {
          * portion of the "grid"
          */
         for (row = 0; row < numRows; row++) {
+            
+            // console.log(row, rowImages[row]);
             for (col = 0; col < numCols; col++) {
                 /* The drawImage function of the canvas' context element
                  * requires 3 parameters: the image to draw, the x coordinate
@@ -134,10 +137,11 @@ var Engine = (function(global) {
                  * so that we get the benefits of caching these images, since
                  * we're using them over and over.
                  */
-                ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
+                // debugger    
+                // console.log(row, col,rowImages[row]);
+                row === 5 && col === 0 ? ctx.drawImage(Resources.get(rowImages[6]), 0, 415) : ctx.drawImage(Resources.get(rowImages[row]), col * 101, row * 83);
             }
         }
-
         renderEntities();
     }
 
@@ -173,7 +177,12 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/Selector.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-pink-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
