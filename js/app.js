@@ -20,6 +20,11 @@ class Enemy {
             this.speed = Math.floor(Math.random() * 101);
             this.speed < 30 ? this.speed === 30 : this.speed;
         }
+        
+        this.checkCollisions();
+    }
+
+    checkCollisions() {
         // Calculate colision
         if(player.x < this.x + this.width &&
             player.x + player.width > this.x &&
@@ -58,7 +63,7 @@ class Player {
 
     changePlayerSprite() {
         //  Changes the player sprite
-        if(player.x === 0) {
+        if(player.x === 0 && player.y === 404) {
             if(counter === 4) {
                 counter = 0;
                 player.sprite = sprites[counter];
