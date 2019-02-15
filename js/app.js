@@ -20,25 +20,21 @@ class Enemy {
             this.speed = Math.floor(Math.random() * 101);
             this.speed < 30 ? this.speed === 30 : this.speed;
         }
-        
-        // Used collisions as a callback to keep track of them.
-        this.checkCollisions();
     }
-
-    checkCollisions() {
+    
+    checkCollisions(character) {
         // Calculates and handles collisions.
-        if(player.x < this.x + this.width &&
-            player.x + player.width > this.x &&
-            player.y < this.y + this.height &&
-            player.y + player.height > this.y ) {
-           player.x = 202;
-           player.y = 404;
-           score--;
-           score >=0 ? updateScore() : score = 0; 
+        if(character.x < this.x + this.width &&
+            character.x + character.width > this.x &&
+            character.y < this.y + this.height &&
+            character.y + character.height > this.y ) {
+           character.x = 202;
+           character.y = 404;
+           decreaseScore();
            
         }
     }
-    
+
     render() {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
@@ -64,17 +60,9 @@ class Player {
         this.sprite = 'images/char-boy.png';
     }
 
-    changePlayerSprite() {
+    changePlayerSprite(count) {
         //  Changes the player sprite
-        if(player.x === 0 && player.y === 404) {
-            if(counter === 4) {
-                counter = 0;
-                player.sprite = sprites[counter];
-            } else {
-                counter++;
-                player.sprite = sprites[counter];
-            }
-        }
+        this.sprite = sprites[count];
     }
 
 
@@ -92,8 +80,7 @@ class Player {
     handleInput(key) {        
         switch(key) {
             case 'left':
-            this.x = this.x > 0 ? this.x - 101 : this.x;
-            player.changePlayerSprite()
+            this.x = this.x > 0 ? this.x - 101 : this.x;        
             break
             case 'right':
             this.x = this.x >= 404 ? this.x : this.x + 101;
@@ -102,9 +89,8 @@ class Player {
             if(this.y > 83){
                 this.y -= 83;
             } else {
-                player.reset()
-                score++;
-                updateScore();
+                this.reset()
+                increaseScore();
             }
             break
             case 'down':
@@ -141,6 +127,13 @@ for(let i = 0; i < 3; i++) {
 // ----Instantiate Player ------//
 // Place the player object in a variable called player
 const player = new Player();
+let counter = 0;
+const checkCount = () => {
+    if(player.x === 0 && player.y === 404) {                
+        counter === 4? counter = 0 : counter++;
+        player.changePlayerSprite(counter);
+    }
+}
 
 
 
@@ -150,19 +143,24 @@ const scoreBoard = document.querySelector('#score');
 // Initial score
 let score = 0;
 // Updates the score
-const updateScore = () => {
+const increaseScore = () => {
+    score++;
+    return scoreBoard.innerHTML = score;
+}
+
+const decreaseScore = () => {
+    score > 0 ? score -- : score = 0;
     return scoreBoard.innerHTML = score;
 }
 
 
 // ------- Other Sprites we can use --------//
-let counter = 0;
-const sprites = [
+const sprites = [    
     'images/char-boy.png',
     'images/char-cat-girl.png',
     'images/char-horn-girl.png',
     'images/char-pink-girl.png',
-    'images/char-princess-girl.png'    
+    'images/char-princess-girl.png',
 ]
 
 
@@ -178,4 +176,5 @@ document.addEventListener('keyup', function(e) {
     };
 
     player.handleInput(allowedKeys[e.keyCode]);
+    checkCount();
 });
